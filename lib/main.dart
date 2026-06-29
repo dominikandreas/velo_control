@@ -350,6 +350,7 @@ class _VeloHomePageState extends State<VeloHomePage> {
       await foundDevice.connect(
         timeout: const Duration(seconds: 15),
         autoConnect: false,
+        license: License.nonprofit,
       );
 
       // Optional on Android, harmlessly ignored where unsupported.
