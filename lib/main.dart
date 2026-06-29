@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/services.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 void main() {
   runApp(const VeloSpeederApp());
@@ -396,14 +397,22 @@ class _VeloHomePageState extends State<VeloHomePage> {
 
   Future<void> _requestBlePermissions() async {
     if (Platform.isAndroid) {
-      final statuses = await <Permission>[
-        Permission.bluetoothScan,
-        Permission.bluetoothConnect,
+      final androidInfo = await DeviceInfoPlugin().androidInfo;
+      final sdkInt = androidInfo.version.sdkInt;
 
-        // Required on Android <= 11 for BLE scanning. On Android 12+ the
-        // BLUETOOTH_SCAN permission above is the important one.
-        Permission.locationWhenInUse,
-      ].request();
+      final List<Permission> permissionsToRequest = [];
+      if (sdkInt >= 31) {
+        // Android 12+
+        permissionsToRequest.addAll([
+          Permission.bluetoothScan,
+          Permission.bluetoothConnect,
+        ]);
+      } else {
+        // Android 11 or lower
+        permissionsToRequest.add(Permission.locationWhenInUse);
+      }
+
+      final statuses = await permissionsToRequest.request();
 
       final denied = statuses.entries
           .where((entry) => entry.value.isDenied || entry.value.isPermanentlyDenied)

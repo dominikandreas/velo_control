@@ -19,6 +19,9 @@ dependencies:
   # Runtime permission requests on Android.
   permission_handler: ^12.0.3
 
+  # Device info for Android version check
+  device_info_plus: ^10.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
