@@ -1,0 +1,28 @@
+name: velo_speeder_switch
+description: BLE controller for a kTwin / VeloSpeeder-style device.
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # BLE central role for Android/iOS.
+  # The app discovers the 3rd service and first readable/writable characteristics,
+  # matching the ESP32 sketch behavior.
+  flutter_blue_plus: ^1.35.5
+
+  # Runtime permission requests on Android.
+  permission_handler: ^11.3.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
